@@ -1,4 +1,4 @@
 DA-SVMs
 =======
 
-Various SVM based methods for domain adaptation
+Various SVM based methods for domain adaptation.
