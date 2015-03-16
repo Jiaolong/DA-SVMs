@@ -14,6 +14,9 @@ $ ln -s <YourPath>/LauraVid .
 $ ln -s <YourPath>/CamVid .
 $ run da_scene.m
 ```
+###Dependencies
+For MMDT, you may need to download liblinear-mmdt from:
+https://github.com/erodner/liblinear-mmdt.git
 
 If you find the code useful, please consider to cite the following paper:
 
