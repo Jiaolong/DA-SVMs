@@ -4,6 +4,7 @@ clear all;
 addpath('../liblinear-mmdt/matlab/');
 addpath('./external/DomainTransformsECCV10/');
 addpath('./SceneSegmentation/');
+addpath('./def/');
 addpath('./MMDT/');
 
 virtual = 1; kitti = 2; cambi = 3;
@@ -23,33 +24,33 @@ if param.dim < size(data.train.source, 2)
     data.test.target = data.test.target * P(:, 1:param.dim);
 end
 
-% Source domain classifier
-tstart = tic;
-model_src = Train(labels.train, data.train, param, source_domain);
-telapsed = toc(tstart);
-[~, acc] = predict(labels.test.target', ...
-    [sparse(data.test.target), ones(length(labels.test.target),1)], ...
-    model_src);
-accuracy = acc(1);
-fprintf('Source domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
-
-% Target domain classifier
-tstart = tic;
-model_tar = Train(labels.train, data.train, param, target_domain);
-telapsed = toc(tstart);
-[~, acc] = predict(labels.test.target', ...
-    [sparse(data.test.target), ones(length(labels.test.target),1)], ...
-    model_tar);
-accuracy = acc(1);
-fprintf('Target domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
+% % Target domain classifier
+% tstart = tic;
+% model_tar = Train(labels.train, data.train, param, target_domain);
+% telapsed = toc(tstart);
+% [~, acc] = predict(labels.test.target', ...
+%     [sparse(data.test.target), ones(length(labels.test.target),1)], ...
+%     model_tar);
+% accuracy = acc(1);
+% fprintf('Target domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
+% 
+% % Source domain classifier
+% tstart = tic;
+% model_src = Train(labels.train, data.train, param, source_domain);
+% telapsed = toc(tstart);
+% [~, acc] = predict(labels.test.target', ...
+%     [sparse(data.test.target), ones(length(labels.test.target),1)], ...
+%     model_src);
+% accuracy = acc(1);
+% fprintf('Source domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
 
 % Domain adaptation
 tstart = tic;
-[model_mmdt, W] = TrainMmdt(labels.train, data.train, param);
+%[model_mmdt, W] = TrainMmdt(labels.train, data.train, param);
+[model_mmdt, W] = TrainMmdtFast(labels.train, data.train, param);
 telapsed = toc(tstart);
-[pl, acc] = predict(labels.test.target', ...
+
+[pl, accuracy] = predict(labels.test.target', ...
     [sparse(data.test.target), ones(length(labels.test.target),1)], ...
     model_mmdt);
-accuracy = acc(1);
-pred_labels = pl;
 fprintf('After adaptation, accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);

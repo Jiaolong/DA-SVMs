@@ -1,13 +1,19 @@
 clear all;
 
 % add dependencies
-addpath('../liblinear-mmdt/matlab/');
-addpath('./external/DomainTransformsECCV10/');
 addpath('./SceneSegmentation/');
-addpath('./MMDT/');
+addpath(genpath('./external/minConf/'));
+addpath('./def/');
+addpath(genpath('./H-ASVMs/'));
 
 virtual = 1; kitti = 2; cambi = 3;
 param = Config_SceneSeg(virtual, cambi);
+
+% Hierarchy definition, for SSVM
+param.DEF_MODEL_IDS = DEF_MODEL_IDS_2L;
+param.model_define = @(m, C) mt_hasvm_model_defines(m, C, 2, param.DEF_MODEL_IDS);
+
+% Load data
 [data, labels] = LoadVirtualPlusRealData(param);
 
 source_domain = param.source;
@@ -25,31 +31,21 @@ end
 
 % Source domain classifier
 tstart = tic;
-model_src = Train(labels.train, data.train, param, source_domain);
+model_src_ssvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.SRC_SSVM);
 telapsed = toc(tstart);
-[~, acc] = predict(labels.test.target', ...
-    [sparse(data.test.target), ones(length(labels.test.target),1)], ...
-    model_src);
-accuracy = acc(1);
+accuracy = test_svm(model_src_ssvm, labels.test.target, data.test.target, param);
 fprintf('Source domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
 
 % Target domain classifier
 tstart = tic;
-model_tar = Train(labels.train, data.train, param, target_domain);
+model_tar_ssvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.TAR_SSVM);
 telapsed = toc(tstart);
-[~, acc] = predict(labels.test.target', ...
-    [sparse(data.test.target), ones(length(labels.test.target),1)], ...
-    model_tar);
-accuracy = acc(1);
+accuracy = test_svm(model_tar_ssvm, labels.test.target, data.test.target, param);
 fprintf('Target domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
 
-% Domain adaptation
+% ASSVM
 tstart = tic;
-[model_mmdt, W] = TrainMmdt(labels.train, data.train, param);
+model_assvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.ASSVM, model_src_ssvm);
 telapsed = toc(tstart);
-[pl, acc] = predict(labels.test.target', ...
-    [sparse(data.test.target), ones(length(labels.test.target),1)], ...
-    model_mmdt);
-accuracy = acc(1);
-pred_labels = pl;
+accuracy = test_svm(model_assvm, labels.test.target, data.test.target, param);
 fprintf('After adaptation, accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);

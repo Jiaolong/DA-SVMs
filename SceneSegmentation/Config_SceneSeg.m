@@ -29,10 +29,15 @@ param.use_Gaussian_kernel = false;
 % <region id="19" name="body" color="64 64 0"/>
 % <region id="20" name="boat" color="192 64 0"/>
        
+% param.categories = {'building' 'grass'  'tree' ...
+%     'cow' 'sheep'  'sky' 'airplane'  'water' ...
+%     'face' 'car' 'bicycle' 'flower' 'sign' 'bird' ...
+%     'book' 'chair' 'road' 'cat' 'dog' 'body' 'boat'};
+
 param.categories = {'building' 'grass'  'tree' ...
     'cow' 'sheep'  'sky' 'airplane'  'water' ...
-    'face' 'car' 'bicycle' 'flower' 'sign' 'bird' ...
-    'book' 'chair' 'road' 'cat' 'dog' 'body' 'boat'};
+    'face' 'car' 'bicycle'};
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -68,10 +73,38 @@ param.C_s = .05;
 param.C_t = 1;
 param.mmdt_iter = 2;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Parameters for SVMs
+param.svm.C = 1;
+param.svm.biasMultiplier = 1;
+param.svm.solver(DEF_CLASSIFIERS.SRC)     = DEF_SVM_SOLVERS.LIBLINEAR;
+param.svm.solver(DEF_CLASSIFIERS.TAR)     = DEF_SVM_SOLVERS.LIBLINEAR;
+param.svm.solver(DEF_CLASSIFIERS.ASVM)    = DEF_SVM_SOLVERS.ASVM_LINEAR;
+param.svm.solver(DEF_CLASSIFIERS.PMT_SVM) = DEF_SVM_SOLVERS.MOSEK_QP;
 
+% Parameters for SSVMs
+param.ssvm.C = 0.001;
+param.lbfgs.options.verbose = 0;
+param.lbfgs.options.maxIter = 1000;
+param.lbfgs.options.optTol  = 0.000001;
+
+% Matlab pool size
+param.pool_size = 4;
+
+param.classifier_names = {
+    'SRC (Liblinear)',...
+    'TAR (Liblinear)',...
+    'MIX',...
+    'ASVM',...
+    'PMT-SVM',...
+    'SRC (SSVM)',...
+    'TAR (SSVM)',...
+    'TAR-ALL',...
+    'ASSVM',...
+    'TAR-ALL-ASSVM',...
+    'HASVM',...
+    'COSS'};
 
 % Number of training examples per category
-param.num_train_source = 2000;
-param.num_train_target = 500;
+%param.num_train_source = 2000;
+%param.num_train_target = 500;
 end
