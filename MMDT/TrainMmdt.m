@@ -14,9 +14,9 @@ function [model, A] = TrainMmdt(labels, data, param)
 % Output:
 %   model - struct of the form in liblinear
 %   A - transformation matrix learned
-if ~isfield(param, 'C_s') || ~isfield(param, 'C_t')
-    param.C_s = 1;
-    param.C_t = 1;
+if ~isfield(param.svm, 'C_s') || ~isfield(param.svm, 'C_t')
+    param.svm.C_s = 1;
+    param.svm.C_t = 1;
 end
 if ~isfield(param, 'gamma')
     param.gamma = 10^(-4);
@@ -43,8 +43,8 @@ data.transformed_target = AugmentWithOnes(data.target)*param.A;
 data_svm = [AugmentWithOnes(data.source); data.transformed_target];
 labels_svm = [labels.source, labels.target];
 
-weights_s = param.C_s * ones(length(labels.source), 1);
-weights_t = param.C_t * ones(length(labels.target), 1);
+weights_s = param.svm.C_s * ones(length(labels.source), 1);
+weights_t = param.svm.C_t * ones(length(labels.target), 1);
 param.weights = [weights_s; weights_t];
 if iter == 1 && isfield(param, 'source_svm')
     model = param.source_svm;

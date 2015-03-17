@@ -69,8 +69,8 @@ param.dim = 100;
 param.norm_type = 'l2_zscore';
 
 % Parameters for MMDT
-param.C_s = .05;
-param.C_t = 1;
+param.svm.C_s = .05;
+param.svm.C_t = 1;
 param.mmdt_iter = 2;
 
 % Parameters for SVMs

@@ -15,12 +15,14 @@ switch classifier_type
         labels = labels_train.source;
         data   = data_train.source;
         ws     = ws_zeros;
-        param.weights = param.svm.C *ones(length(labels), 1);
+        param.weights = param.svm.C_s *ones(length(labels), 1);
+        param.svm.C = param.svm.C_s;
     case DEF_CLASSIFIERS.TAR
         labels = labels_train.target;
         data   = data_train.target;
         ws     = ws_zeros;
-        param.weights = param.svm.C*ones(length(labels), 1);
+        param.weights = param.svm.C_t*ones(length(labels), 1);
+        param.svm.C = param.svm.C_t;
     case {DEF_CLASSIFIERS.ASVM, DEF_CLASSIFIERS.PMT_SVM}
         labels = labels_train.target;
         data   = data_train.target;

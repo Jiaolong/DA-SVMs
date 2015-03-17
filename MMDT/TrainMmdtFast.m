@@ -17,6 +17,17 @@ end
 weights_s = param.C_s * ones(length(labels.source),1);
 weights_t = param.C_t * ones(length(labels.target),1);
 
-[model, A] = train_linear_mmdt_fast(weights_t,...
-    labels.target', sparse(data.target'), weights_s, labels.source', sparse(data.source'));
+[svm, A] = train_linear_mmdt_fast(weights_t,...
+    labels.target', sparse(AugmentWithOnes(data.target)'),...
+    weights_s, labels.source',...
+    sparse(AugmentWithOnes(data.source)'));
+
+w = svm.w';
+model.svmmodel = svm;
+model.b = param.svm.biasMultiplier * w(end, :) ;
+model.w = w(1:end-1, :);
+end
+
+function aug_data = AugmentWithOnes(data)
+aug_data = [data, ones(size(data,1),1)];
 end
