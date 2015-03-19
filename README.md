@@ -18,6 +18,12 @@ $ run da_scene.m
 For MMDT, you may need to download liblinear-mmdt from:
 https://github.com/erodner/liblinear-mmdt.git
 
+###For running on CVC cluster
+```sh
+$ cp scripts/job.sh job.sh
+$ cp scripts/submit_job.sh submit_job.sh
+$ ./submit_job.sh
+```
 If you find the code useful, please consider to cite the following paper:
 
 - J. Xu, S. Ramos, D. Vazquez, A. M. Lopez.
