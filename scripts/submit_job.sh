@@ -12,4 +12,4 @@
 # cic.q: reserved for the CIC group
 
 # Example: qsub -q short.q -l mem=4G job.sh
-qsub -q compute-0-0 medium.q job.sh
+qsub -q medium.q@compute-0-0 job.sh

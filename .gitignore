@@ -1,4 +1,5 @@
 /data_*
 /cache
-job.sh
-submit_job.sh
+
+/job.sh
+/submit_job.sh
