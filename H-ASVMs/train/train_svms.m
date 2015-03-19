@@ -7,7 +7,7 @@ function model = train_svms(labels_train, data_train, param, classifier_type, mo
 
 labels   = [];
 data     = [];
-num_classes  = length(unique(labels_train));
+num_classes  = length(unique(labels_train.source));
 ws_zeros = zeros(size(data_train.target, 2), num_classes);
 
 switch classifier_type

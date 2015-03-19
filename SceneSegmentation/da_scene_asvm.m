@@ -45,4 +45,4 @@ save('cache/model_asvmlinear_asvm.mat', 'model_mmdt');
 [acc_asvm, ~, ~, ~, acc_overall_asvm] = test_svm(model_asvm, labels.test.target, data.test.target);
 
 fprintf(['ASVM average accuracy = %6.2f,'...
-    'overall accuracy = %6.2f, (Time = %6.2f)\n'], acc_asvm, acc_overall_asvm, telapsed_asvm;
+    'overall accuracy = %6.2f, (Time = %6.2f)\n'], acc_asvm, acc_overall_asvm, telapsed_asvm);
