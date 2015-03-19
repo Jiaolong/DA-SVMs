@@ -34,9 +34,9 @@ param.use_Gaussian_kernel = false;
 %     'face' 'car' 'bicycle' 'flower' 'sign' 'bird' ...
 %     'book' 'chair' 'road' 'cat' 'dog' 'body' 'boat'};
 
-param.categories = {'building' 'grass'  'tree' ...
-    'cow' 'sheep'  'sky' 'airplane'  'water' ...
-    'face' 'car' 'bicycle'};
+% param.categories = {'building' 'grass'  'tree' ...
+%     'cow' 'sheep'  'sky' 'airplane'  'water' ...
+%     'face' 'car' 'bicycle'};
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,8 +76,8 @@ param.mmdt_iter = 2;
 % Parameters for SVMs
 param.svm.C = 1;
 param.svm.biasMultiplier = 1;
-param.svm.solver(DEF_CLASSIFIERS.SRC)     = DEF_SVM_SOLVERS.LIBLINEAR;
-param.svm.solver(DEF_CLASSIFIERS.TAR)     = DEF_SVM_SOLVERS.LIBLINEAR;
+param.svm.solver(DEF_CLASSIFIERS.SRC)     = DEF_SVM_SOLVERS.ASVM_LINEAR;
+param.svm.solver(DEF_CLASSIFIERS.TAR)     = DEF_SVM_SOLVERS.ASVM_LINEAR;
 param.svm.solver(DEF_CLASSIFIERS.ASVM)    = DEF_SVM_SOLVERS.ASVM_LINEAR;
 param.svm.solver(DEF_CLASSIFIERS.PMT_SVM) = DEF_SVM_SOLVERS.MOSEK_QP;
 

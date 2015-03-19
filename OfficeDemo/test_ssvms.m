@@ -47,28 +47,28 @@ for i = 1:n
     tstart = tic;
     model_src_ssvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.SRC_SSVM);
     telapsed_ssvm(i) = toc(tstart);
-    acc_ssvm = test_svm(model_src_ssvm, labels.test.target, data.test.target, param);
+    acc_ssvm = test_svm(model_src_ssvm, labels.test.target, data.test.target);
     accuracy_ssvm(i) = acc_ssvm(1);
         
     % ASSVM
     tstart = tic;
     model_assvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.ASSVM, model_src_ssvm);
     telapsed_assvm(i) = toc(tstart);
-    acc_assvm = test_svm(model_assvm, labels.test.target, data.test.target, param);
+    acc_assvm = test_svm(model_assvm, labels.test.target, data.test.target);
     accuracy_assvm(i) = acc_assvm(1);
     
     % MIX
     tstart = tic;
     model_mix = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.MIX, model_src_ssvm);
     telapsed_mix(i) = toc(tstart);
-    acc_mix = test_svm(model_mix, labels.test.target, data.test.target, param);
+    acc_mix = test_svm(model_mix, labels.test.target, data.test.target);
     accuracy_mix(i) = acc_mix(1);
     
     % Cost-Sensitive SSVM
     tstart = tic;
     model_cocs = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.COSS, model_src_ssvm);
     telapsed_cocs(i) = toc(tstart);
-    acc_cocs = test_svm(model_cocs, labels.test.target, data.test.target, param);
+    acc_cocs = test_svm(model_cocs, labels.test.target, data.test.target);
     accuracy_cocs(i) = acc_cocs(1);
 end
 fprintf('\n');

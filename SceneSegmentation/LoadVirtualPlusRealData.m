@@ -5,7 +5,7 @@ catch
     dir_virtual = param.data_dir_virtual;
     dir_real = param.data_dir_real;
     
-    list_src_train = readTextFile([dir_virtual '/trainList100.txt']);
+    list_src_train = readTextFile([dir_virtual '/trainList200.txt']);
     list_tar_train = readTextFile([dir_real '/trainDAList.txt']);
     list_tar_test = readTextFile([dir_real '/evalList.txt']);
     
@@ -63,9 +63,10 @@ catch
     labels_test_tar(inds_neg) = [];
     fts_test_tar(inds_neg, :) = [];
     
-    data.train.source = fts_train_src;
-    data.train.target = fts_train_tar;
-    data.test.target = fts_test_tar;
+    data.train.source = NormData(fts_train_src, param.norm_type);
+    fts_tar_norm = NormData([fts_train_tar;fts_test_tar], param.norm_type);
+    data.train.target = fts_tar_norm(1:size(fts_train_tar,1),:);
+    data.test.target = fts_tar_norm(size(fts_train_tar,1)+1:end,:);
     
     labels.train.source = (labels_train_src+1)';
     labels.train.target = (labels_train_tar+1)';
@@ -86,7 +87,9 @@ fprintf('\nNumber of classes: %d', num_classes);
 fprintf('\nTotal number of samples: %d', length(labels));
 fprintf('\nNumber of samples per class:');
 for i=1:num_classes
-    fprintf('\nClass %d: %d', i, sum(labels==i));
+    num_sample = sum(labels==i);
+    fprintf('\nClass %d: %d', i, num_sample);
+    assert(num_sample > 0, sprintf('Class %d has 0 samples!', i));
 end
 fprintf('\n');
 end

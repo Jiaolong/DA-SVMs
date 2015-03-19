@@ -7,8 +7,8 @@ function model = train_svms(labels_train, data_train, param, classifier_type, mo
 
 labels   = [];
 data     = [];
-classes  = param.categories;
-ws_zeros = zeros(size(data_train.target, 2), length(classes));
+num_classes  = length(unique(labels_train));
+ws_zeros = zeros(size(data_train.target, 2), num_classes);
 
 switch classifier_type
     case DEF_CLASSIFIERS.SRC
@@ -35,8 +35,8 @@ switch svm_solver
     case DEF_SVM_SOLVERS.PEGASOS % Pegasos
         lambda = 1 / (param.svm.C *  length(labels)) ;
         w = [] ;
-        for ci = 1:length(classes)
-            % parfor ci = 1:length(classes)
+        for ci = 1:num_classes
+            % parfor ci = 1:num_classes
             % perm = randperm(size(data,2)) ;
             % fprintf('Training model for class %s\n', classes{ci}) ;
             y = 2 * (labels == ci) - 1 ;
@@ -53,9 +53,10 @@ switch svm_solver
             param.svm.biasMultiplier, param.svm.C)) ;
         w = svm.w' ;
         model.svmmodel = svm;
+		model.Label = svm.Label;
     case DEF_SVM_SOLVERS.ASVM_LINEAR % asvm_linear
         w = [];
-        for ci = 1:length(classes)
+        for ci = 1:num_classes
             if classifier_type ~= DEF_CLASSIFIERS.ASVM
                 m_src = {};
             else
@@ -75,11 +76,12 @@ switch svm_solver
             
             w(:, ci) = svm.w';
             model.svmmodel(ci) = svm;
+			model.Label = [1:num_classes];
         end
     case DEF_SVM_SOLVERS.MOSEK_QP % Mosek QP
         if classifier_type ~= DEF_CLASSIFIERS.PMT_SVM
             w = [];
-            for ci = 1:length(classes)
+            for ci = 1:num_classes
                 y = 2 * (labels == ci) - 1 ;
                 ws_ci = ws(:,ci);
                 if norm(ws_ci(:))
@@ -90,7 +92,7 @@ switch svm_solver
             end
         else % PTM_SVM
             w = [];
-            for ci = 1:length(classes)
+            for ci = 1:num_classes
                 y = 2 * (labels == ci) - 1 ;
                 ws_ci = ws(:,ci);
                 if norm(ws_ci(:))

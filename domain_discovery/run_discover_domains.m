@@ -64,7 +64,7 @@ labels.source   = Labels{source_domain,1};
 % Train the source model
 model = train_ssvms(labels, data, param, DEF_CLASSIFIERS.SRC_SSVM);
 % Predict the target labels
-[acc Y_pred] = test_svm(model, Y, X, param);
+[acc Y_pred] = test_svm(model, Y, X);
 fprintf('\nSource classifier accuracy = %0.2f\n', acc);
 end
 

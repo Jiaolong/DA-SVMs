@@ -29,6 +29,7 @@ w = svm.w' ;
 model.svmmodel = svm;
 model.b = param.svm.biasMultiplier * w(end, :) ;
 model.w = w(1:end-1, :);
+model.Label = svm.Label;
 end
 
 function aug_data = AugmentWithOnes(param, data)

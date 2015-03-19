@@ -129,7 +129,7 @@
 % %     model.w = w(1:end-1, :) ;
 % %     model.svmmodel = svm;
 % %     param.categories = 1:3;
-% %     acc_src = test_svm(model, mid_te'-1, dt_te, param);
+% %     acc_src = test_svm(model, mid_te'-1, dt_te);
 % %     fprintf('\n SVM: Split %d, domain classification accuracy = %f', i, acc_src);
 %     % train RF per category
 % %     for c=1:length(param.categories)

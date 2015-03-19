@@ -62,7 +62,7 @@ fprintf('SRC-KNN: Accuracy = %6.2f (Time = %6.2f)\n', accuracy_knn, telapsed_knn
 tstart = tic;
 model_src_ssvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.SRC_SSVM);
 telapsed_ssvm = toc(tstart);
-acc_ssvm = test_svm(model_src_ssvm, labels.test.target, data.test.target, param);
+acc_ssvm = test_svm(model_src_ssvm, labels.test.target, data.test.target);
 accuracy_ssvm = acc_ssvm;
 fprintf('SRC-SSVM: Accuracy = %6.2f (Time = %6.2f)\n', accuracy_ssvm, telapsed_ssvm);
 
@@ -70,7 +70,7 @@ fprintf('SRC-SSVM: Accuracy = %6.2f (Time = %6.2f)\n', accuracy_ssvm, telapsed_s
 % tstart = tic;
 % model_assvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.ASSVM, model_src_ssvm);
 % telapsed_assvm = toc(tstart);
-% acc_assvm = test_svm(model_assvm, labels.test.target, data.test.target, param);
+% acc_assvm = test_svm(model_assvm, labels.test.target, data.test.target);
 % accuracy_assvm = acc_assvm;
 % fprintf('A-SSVM: Accuracy = %6.2f (Time = %6.2f)\n', accuracy_assvm, telapsed_assvm);
 
@@ -105,7 +105,7 @@ for model_test_id = model_test_ids
     model = models_hasvm{model_test_id - DEF_MODEL_IDS.M_T1 + 3};
     test_ids = 1:size(data.test.target, 1);
     test_ids = test_ids(test_target_subdomains == model_test_id);
-    acc_hasvm = test_svm(model, labels.test.target(test_ids), data.test.target(test_ids,:), param);
+    acc_hasvm = test_svm(model, labels.test.target(test_ids), data.test.target(test_ids,:));
     accuracy_hasvm = acc_hasvm;
     fprintf('H-ASSVM: Sub-domain(%d), Accuracy = %6.2f (Time = %6.2f)\n', model_test_id, accuracy_hasvm, telapsed_hasvm);
 end

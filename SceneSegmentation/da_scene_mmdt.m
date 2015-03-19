@@ -17,34 +17,34 @@ target_domain = param.target;
 fprintf('Source Domain - %s, Target Domain - %s\n', ...
     param.domain_names{source_domain}, param.domain_names{target_domain});
 
-if param.dim < size(data.train.source, 2)
-    P = princomp([data.train.source; data.train.target; data.test.target]);
-    data.train.source = data.train.source * P(:, 1:param.dim);
-    data.train.target = data.train.target * P(:, 1:param.dim);
-    data.test.target = data.test.target * P(:, 1:param.dim);
-end
-
 % Target domain classifier
 tstart = tic;
 model_tar = Train(labels.train, data.train, param, target_domain);
-telapsed = toc(tstart);
+telapsed_tar = toc(tstart);
+save('cache/model_tar.mat', 'model_tar');
 
-accuracy = test_svm(model_tar, labels.test.target, data.test.target, param);
+[acc_tar, ~, ~, ~, acc_overall_tar] = test_svm(model_tar, labels.test.target, data.test.target);
 
-fprintf('Target domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
+fprintf(['TAR average accuracy = %6.2f,'...
+    'overall accuracy = %6.2f, (Time = %6.2f)\n'], acc_tar, acc_overall_tar, telapsed_tar);
 
 % Source domain classifier
 tstart = tic;
 model_src = Train(labels.train, data.train, param, source_domain);
-telapsed = toc(tstart);
-accuracy = test_svm(model_src, labels.test.target, data.test.target, param);
-fprintf('Source domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
+telapsed_src = toc(tstart);
+save('cache/model_src.mat', 'model_src');
+
+[acc_src, ~, ~, ~, acc_overall_src] = test_svm(model_src, labels.test.target, data.test.target);
+
+fprintf(['SRC average accuracy = %6.2f,'...
+    'overall accuracy = %6.2f, (Time = %6.2f)\n'], acc_src, acc_overall_src, telapsed_src);
 
 % Domain adaptation
 tstart = tic;
-%[model_mmdt, W] = TrainMmdt(labels.train, data.train, param);
 [model_mmdt, W] = TrainMmdtFast(labels.train, data.train, param);
-telapsed = toc(tstart);
+telapsed_mmdt = toc(tstart);
+save('cache/model_mmdt.mat', 'model_mmdt');
+[acc_mmdt, ~, ~, ~, acc_overall_mmdt] = test_svm(model_mmdt, labels.test.target, data.test.target);
 
-accuracy = test_svm(model_mmdt, labels.test.target, data.test.target, param);
-fprintf('After adaptation, accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
+fprintf(['MMDT average accuracy = %6.2f,'...
+    'overall accuracy = %6.2f, (Time = %6.2f)\n'], acc_mmdt, acc_overall_mmdt, telapsed_mmdt);

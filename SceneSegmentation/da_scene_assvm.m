@@ -33,19 +33,19 @@ end
 tstart = tic;
 model_src_ssvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.SRC_SSVM);
 telapsed = toc(tstart);
-accuracy = test_svm(model_src_ssvm, labels.test.target, data.test.target, param);
+accuracy = test_svm(model_src_ssvm, labels.test.target, data.test.target);
 fprintf('Source domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
 
 % Target domain classifier
 tstart = tic;
 model_tar_ssvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.TAR_SSVM);
 telapsed = toc(tstart);
-accuracy = test_svm(model_tar_ssvm, labels.test.target, data.test.target, param);
+accuracy = test_svm(model_tar_ssvm, labels.test.target, data.test.target);
 fprintf('Target domain classifier accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);
 
 % ASSVM
 tstart = tic;
 model_assvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.ASSVM, model_src_ssvm);
 telapsed = toc(tstart);
-accuracy = test_svm(model_assvm, labels.test.target, data.test.target, param);
+accuracy = test_svm(model_assvm, labels.test.target, data.test.target);
 fprintf('After adaptation, accuracy = %6.2f (Time = %6.2f)\n', accuracy, telapsed);

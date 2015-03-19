@@ -48,7 +48,7 @@ for i = 1:n
     tstart = tic;
     model_src = train_svms(labels.train, data.train, param, DEF_CLASSIFIERS.SRC);
     telapsed_src(i) = toc(tstart);
-    acc_src = test_svm(model_src, labels.test.target, data.test.target, param);
+    acc_src = test_svm(model_src, labels.test.target, data.test.target);
     accuracy_src(i) = acc_src(1);
     % fprintf('   SRC: Accuracy = %6.2f (Time = %6.2f)\n', accuracy_src(i), telapsed_src(i));
     
@@ -56,7 +56,7 @@ for i = 1:n
     tstart = tic;
     model_asvm = train_svms(labels.train, data.train, param, DEF_CLASSIFIERS.ASVM, model_src);
     telapsed_asvm(i) = toc(tstart);
-    acc_asvm = test_svm(model_asvm, labels.test.target, data.test.target, param);
+    acc_asvm = test_svm(model_asvm, labels.test.target, data.test.target);
     accuracy_asvm(i) = acc_asvm(1);
     % fprintf('   ASVM: Accuracy = %6.2f (Time = %6.2f)\n', accuracy_tar(i), telapsed_tar(i));
 end

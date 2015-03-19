@@ -162,8 +162,8 @@ end
 if method == DEF_CLASSIFIERS.HASVM || DEF_CLASSIFIERS.TAR_ALL_ASSVM...
             || DEF_CLASSIFIERS.TAR_ALL_SSVM
     index = param.target == param.target_domains;
-    accuracy = test_svm(model, labels.test.targets{index}, data.test.targets{index}, param);
+    accuracy = test_svm(model, labels.test.targets{index}, data.test.targets{index});
 else
-    accuracy = test_svm(model, labels.test.target, data.test.target, param);
+    accuracy = test_svm(model, labels.test.target, data.test.target);
 end
 end

@@ -1,29 +1,38 @@
-function [acc pl scores confus, acc_overall] = test_svm(model, labels, data, param)
+function [acc, pl, scores, confus, acc_overall] = test_svm(model, labels, data)
 % Usage:
-%   [acc pl] = test_svm(model, labels, data, param)
+%   [acc pl] = test_svm(model, labels, data)
 % Input
 %   model  -trained model
 %   labels -ground truth label
 %   data   -test data, num_samplesxdim
-%   param  -the parameters
 % Output:
 %   acc    -accuracy
 %   pl     -predicted label
+%   score  - score of each sample
+%   confus - confusion maxtrix
+%   acc_overall - overall accuracy = total_correct/ total_sample
 
-classes = param.categories;
 data = data';
-numTest = zeros(length(classes), 1);
+num_classes = size(model.w,2);
+assert(num_classes == length(unique(labels)),...
+    sprintf('The number of testing classes (%d)is not equal to the number of training classes (%d)',...
+    length(unique(labels)), num_classes));
+numTest = zeros(num_classes, 1);
 numTest = binsum(numTest, ones(length(labels),1), labels);
 numTest(numTest == 0) = Inf;
 % Estimate the class of the test images
 scores = model.w' * data + model.b' * ones(1,size(data,2));
 
-[~, imageEstClass] = max(scores, [], 1);
+[~, max_index] = max(scores, [], 1);
+
+imageEstClass = zeros(size(max_index));
+for i=1:length(imageEstClass)
+    imageEstClass(i) = model.Label(max_index(i));
+end
 
 % Compute the confusion matrix
-idx = sub2ind([length(classes), length(classes)], ...
-    labels, imageEstClass);
-confus = zeros(length(classes));
+idx = sub2ind([num_classes, num_classes], labels, imageEstClass);
+confus = zeros(num_classes);
 confus = binsum(confus, ones(size(idx)), idx);
 
 % Plots

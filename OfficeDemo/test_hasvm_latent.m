@@ -104,7 +104,7 @@ for i = 1:n
         tstart = tic;
         model_src_ssvm = train_ssvms(labels.train, data.train, param, DEF_CLASSIFIERS.SRC_SSVM);
         telapsed_ssvm(i, test_domain) = toc(tstart);
-        accuracy_ssvm(i, test_domain) = test_svm(model_src_ssvm, labels.test.targets{test_domain_id}, data.test.targets{test_domain_id}, param);
+        accuracy_ssvm(i, test_domain) = test_svm(model_src_ssvm, labels.test.targets{test_domain_id}, data.test.targets{test_domain_id});
         
         % H-ASVMs
         tstart = tic;
@@ -113,7 +113,7 @@ for i = 1:n
         
         mid = get_model_id(test_domain, lat_target_domains, param);
         model_hasvm = get_hsvm_model(mid, model_hasvms);
-        [accuracy_hasvm(i, test_domain), pl] = test_svm(model_hasvm, labels.test.targets{test_domain_id}, data.test.targets{test_domain_id}, param);
+        [accuracy_hasvm(i, test_domain), pl] = test_svm(model_hasvm, labels.test.targets{test_domain_id}, data.test.targets{test_domain_id});
         labels_pr = [labels_pr pl];
         labels_gt = [labels_gt labels.test.targets{test_domain_id}];
     end
