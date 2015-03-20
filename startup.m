@@ -3,9 +3,7 @@ addpath('./util/');
 addpath('./OfficeDemo/');
 addpath('./SceneSegmentation/');
 
-if ~exist('./cache', 'dir')
-    mkdir('./cache');
-end
+exists_or_mkdir('./cache');
 
 % If use vl_feat
 % dowload the code from: http://www.vlfeat.org/

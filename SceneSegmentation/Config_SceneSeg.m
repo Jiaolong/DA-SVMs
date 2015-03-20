@@ -37,7 +37,7 @@ param.use_Gaussian_kernel = false;
 % param.categories = {'building' 'grass'  'tree' ...
 %     'cow' 'sheep'  'sky' 'airplane'  'water' ...
 %     'face' 'car' 'bicycle'};
-
+param.num_class = 11;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
