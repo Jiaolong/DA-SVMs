@@ -7,6 +7,9 @@ addpath('./SceneSegmentation/');
 addpath('./def/');
 addpath('./MMDT/');
 
+cache_dir = './cache/MMDT/';
+exists_or_mkdir(cache_dir);
+
 virtual = 1; kitti = 2; cambi = 3;
 param = Config_SceneSeg(virtual, cambi);
 [data, labels] = LoadVirtualPlusRealData(param);
@@ -21,12 +24,12 @@ fprintf('Source Domain - %s, Target Domain - %s\n', ...
 % Target domain classifier
 telapsed_tar = 0;
 try
-    load('cache/model_tar.mat');
+    load([cache_dir 'model_tar.mat']);
 catch
     tstart = tic;
     model_tar = Train(labels.train, data.train, param, target_domain);
     telapsed_tar = toc(tstart);
-    save('cache/model_tar.mat', 'model_tar');
+    save([cache_dir 'model_tar.mat'], 'model_tar');
 end
 
 % Test on training samples
@@ -35,19 +38,19 @@ end
 % Test on testing samples
 [avg_acc.test.target, ~, scores.test.target, ~, ovr_acc.test.target] =...
     test_svm(model_tar, labels.test.target, data.test.target);
-save('cache/scores_tar.mat', 'scores');
-writeScoreTxt(scores, param, './cache/TAR/');
+save([cache_dir 'scores_tar.mat'], 'scores');
+% writeScoreTxt(scores, param, cache_dir);
 
 %------------------------------------------------------------------------------
 % Source domain classifier
 telapsed_src = 0;
 try
-    load('cache/model_src.mat');
+    load([cache_dir 'model_src.mat']);
 catch
     tstart = tic;
     model_src = Train(labels.train, data.train, param, source_domain);
     telapsed_src = toc(tstart);
-    save('cache/model_src.mat', 'model_src');
+    save([cache_dir 'model_src.mat'], 'model_src');
 end
 
 [acc_src, ~, ~, ~, acc_overall_src] = test_svm(model_src, labels.test.target, data.test.target);
@@ -59,12 +62,12 @@ fprintf(['SRC average accuracy = %6.2f,'...
 % Domain adaptation with MMDT
 telapsed_mmdt = 0;
 try
-    load('cache/model_mmdt.mat');
+    load([cache_dir 'model_mmdt.mat']);
 catch
     tstart = tic;
     [model_mmdt, W] = TrainMmdtFast(labels.train, data.train, param);
     telapsed_mmdt = toc(tstart);
-    save('cache/model_mmdt.mat', 'model_mmdt');
+    save([cache_dir 'model_mmdt.mat'], 'model_mmdt', 'W');
 end
 
 % Test on training samples
@@ -75,8 +78,9 @@ end
 % Test on testing samples
 [avg_acc.test.target, ~, scores.test.target, conf, ovr_acc.test.target] =...
     test_svm(model_mmdt, labels.test.target, data.test.target);
-save('cache/scores_mmdt.mat', 'scores');
-writeScoreTxt(scores, param, './cache/MMDT/');
+save([cache_dir 'scores_mmdt.mat'], 'scores');
+% writeScoreTxt(scores, param, cache_dir);
+writeTransformedSRCfeature(W, param, cache_dir);
 
 fprintf(['MMDT average accuracy = %6.2f,'...
     'overall accuracy = %6.2f, (Time = %6.2f)\n'], ...
