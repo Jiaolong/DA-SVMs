@@ -10,6 +10,7 @@ classdef DEF_MODEL_IDS_2L
         M_T1 = 2;
         M_T2 = 3;
         M_T3 = 4;
+        M_T4 = 5;
     end
 
     methods (Access = public)    % private so that you cant instantiate

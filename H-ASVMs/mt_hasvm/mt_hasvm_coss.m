@@ -5,7 +5,7 @@ function model_svm = mt_hasvm_coss(param, labels, data, domain_index)
 % Output:
 
 % Initialize an empty parent model
-num_class   = length(param.categories);
+num_class   = param.num_class;
 len_feat    = size(data,2);
 % training a new model
 model_s0    = init_model_w(num_class, len_feat, zeros(len_feat, 1));
@@ -48,7 +48,7 @@ end
 
 function write_feat_multiclass(dataid, model_id, y, x, param, domain_id)
 % write a feature vector into cache for multiclass SSVM
-num_class = length(param.categories);
+num_class = param.num_class;
 len_x     = length(x);
 fvc_zeros = zeros(num_class*len_x, 1);
 is_mined  = false;

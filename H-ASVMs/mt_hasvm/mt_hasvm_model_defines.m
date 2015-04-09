@@ -1,9 +1,15 @@
-function models = mt_hasvm_model_defines(model_s0, C, Layers, DEF_MODEL_IDS)
+function models = mt_hasvm_model_defines(model_s0, C, Layers, DEF_MODEL_IDS,...
+    num_target_domains)
 % Define the hierarchy
 % Important note: change the corresponding definitions in DEF_MODEL_IDS
+
+if nargin < 5
+    num_target_domains = 3;
+end
+
 switch Layers
     case 2
-        models = hierarchy_2layers(model_s0, C, DEF_MODEL_IDS);
+        models = hierarchy_2layers(model_s0, C, DEF_MODEL_IDS, num_target_domains);
     case 3
         models = hierarchy_3layers(model_s0, C, DEF_MODEL_IDS);
     otherwise
@@ -11,7 +17,7 @@ switch Layers
 end
 end
 
-function models = hierarchy_2layers(model_s0, C, DEF_MODEL_IDS)
+function models = hierarchy_2layers(model_s0, C, DEF_MODEL_IDS, num_target_domains)
 % Define application specific hierachical models
 % Root
 models{1} = model_s0; models{1}.id = DEF_MODEL_IDS.M_S0; models{1}.parent_id = DEF_MODEL_IDS.M_S0; models{1}.C = C; % Source model
@@ -20,7 +26,18 @@ models{2} = model_s0; models{2}.id = DEF_MODEL_IDS.M_S1; models{2}.parent_id = D
 % Layer 2
 models{3} = model_s0; models{3}.id = DEF_MODEL_IDS.M_T1; models{3}.parent_id = DEF_MODEL_IDS.M_S1; models{3}.C = C;
 models{4} = model_s0; models{4}.id = DEF_MODEL_IDS.M_T2; models{4}.parent_id = DEF_MODEL_IDS.M_S1; models{4}.C = C;
+
+if num_target_domains < 3
+    return;
+end
+
 models{5} = model_s0; models{5}.id = DEF_MODEL_IDS.M_T3; models{5}.parent_id = DEF_MODEL_IDS.M_S1; models{5}.C = C;
+
+if num_target_domains < 4
+    return;
+end
+
+models{6} = model_s0; models{6}.id = DEF_MODEL_IDS.M_T4; models{6}.parent_id = DEF_MODEL_IDS.M_S1; models{6}.C = C;
 end
 
 function models = hierarchy_3layers(model_s0, C, DEF_MODEL_IDS)

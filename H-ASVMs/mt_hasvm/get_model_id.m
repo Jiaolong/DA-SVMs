@@ -8,5 +8,7 @@ switch index
         mid = param.DEF_MODEL_IDS.M_T2;
     case 3
         mid = param.DEF_MODEL_IDS.M_T3;
+    case 4
+        mid = param.DEF_MODEL_IDS.M_T4;
 end
 end

@@ -3,7 +3,7 @@ clear all;
 % add dependencies
 addpath('../liblinear-mmdt/matlab/');
 addpath('./external/DomainTransformsECCV10/');
-addpath('./SceneSegmentation/');
+addpath('./H-ASVMs/');
 addpath('./def/');
 addpath('./MMDT/');
 
@@ -38,8 +38,8 @@ end
 % Test on testing samples
 [avg_acc.test.target, ~, scores.test.target, ~, ovr_acc.test.target] =...
     test_svm(model_tar, labels.test.target, data.test.target);
-save([cache_dir 'scores_tar.mat'], 'scores');
-% writeScoreTxt(scores, param, cache_dir);
+%save([cache_dir 'scores_tar.mat'], 'scores');
+%writeScoreTxt(scores, param, cache_dir, model_tar);
 
 %------------------------------------------------------------------------------
 % Source domain classifier
@@ -79,7 +79,7 @@ end
 [avg_acc.test.target, ~, scores.test.target, conf, ovr_acc.test.target] =...
     test_svm(model_mmdt, labels.test.target, data.test.target);
 save([cache_dir 'scores_mmdt.mat'], 'scores');
-% writeScoreTxt(scores, param, cache_dir);
+% writeScoreTxt(scores, param, cache_dir, model_mmdt);
 writeTransformedSRCfeature(W, param, cache_dir);
 
 fprintf(['MMDT average accuracy = %6.2f,'...

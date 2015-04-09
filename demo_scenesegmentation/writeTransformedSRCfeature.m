@@ -17,7 +17,7 @@ for i = 1:length(list_train_src)
     fprintf('SRC-TRANS: [%d/%d]\n', i, length(list_train_src));
     fname = [dir_train_src list_train_src{i} '.feat_trans.txt'];
     feat_trans = feat2*W';
-    dlmwrite(fname, feat_trans);
+    dlmwrite(fname, feat_trans, 'delimiter', ' ', 'precision', 6);
 end
 
 end

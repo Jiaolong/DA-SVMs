@@ -4,7 +4,7 @@ function svm_models = mt_hasvm(param, labels, data, model_ids, model_svm_src)
 % Input:
 % Output:
 
-num_class   = length(param.categories);
+num_class   = param.num_class;
 len_feat    = size(data,2);
 model_s0    = init_model_m(num_class, len_feat, model_svm_src);
 
@@ -47,17 +47,18 @@ end
 
 function model_svm = get_svm_model(model, param)
 % Convert model to svm model
-num_class   = length(param.categories);
+num_class   = param.num_class;
 for i=1:num_class
     model_svm.w(:,i) = model.blocks(i).w;
 end
 model_svm.b = zeros(1, num_class);
 model_svm.id = model.id;
+model_svm.Label = 1:num_class;
 end
 
 function write_feat_multiclass(dataid, model_id, y, x, param)
 % write a feature vector into cache for multiclass SSVM
-num_class = length(param.categories);
+num_class = param.num_class;
 len_x     = length(x);
 fvc_zeros = zeros(num_class*len_x, 1);
 is_mined  = false;

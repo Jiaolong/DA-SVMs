@@ -6,7 +6,7 @@ function model_svm = mt_hasvm_single(param, labels, data, model_svm_src)
 % Construct hierachical models
 C = param.ssvm.C;
 % Initialize an empty parent model
-num_class   = length(param.categories);
+num_class   = param.num_class;
 len_feat    = size(data,2);
 if isempty(model_svm_src) % training a new model
     model_s0    = init_model_w(num_class, len_feat, zeros(len_feat, 1));
@@ -45,13 +45,14 @@ model_svm.b = zeros(1, num_class);
 for i=1:num_class
     model_svm.w(:,i) = model.blocks(i).w;
 end
+model_svm.Label = 1:num_class;
 % Free cache
 mt_hasvm_fv_cache('free');
 end
 
 function write_feat_multiclass(dataid, model_id, y, x, param)
 % write a feature vector into cache for multiclass SSVM
-num_class = length(param.categories);
+num_class = param.num_class;
 len_x     = length(x);
 fvc_zeros = zeros(num_class*len_x, 1);
 is_mined  = false;

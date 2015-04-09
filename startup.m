@@ -1,7 +1,8 @@
 addpath('./def/');
-addpath('./util/');
-addpath('./OfficeDemo/');
-addpath('./SceneSegmentation/');
+addpath(genpath('./util/'));
+addpath('./demo_face/');
+addpath('./H-ASVMs/');
+addpath('./demo_scenesegmentation/');
 
 exists_or_mkdir('./cache');
 

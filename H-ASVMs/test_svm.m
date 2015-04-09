@@ -20,16 +20,16 @@ assert(num_classes == length(unique(labels)),...
 numTest = zeros(num_classes, 1);
 numTest = binsum(numTest, ones(length(labels),1), labels);
 numTest(numTest == 0) = Inf;
+
+% Adjust the order of the weights
+model = order_model(model);
+
 % Estimate the class of the test images
 scores = model.w' * data + model.b' * ones(1,size(data,2));
 
-[~, max_index] = max(scores, [], 1);
+[~, imageEstClass] = max(scores, [], 1);
 
-imageEstClass = zeros(size(max_index));
-for i=1:length(imageEstClass)
-    imageEstClass(i) = model.Label(max_index(i));
-end
-
+labels = reshape(labels, size(imageEstClass));
 % Compute the confusion matrix
 idx = sub2ind([num_classes, num_classes], labels, imageEstClass);
 confus = zeros(num_classes);

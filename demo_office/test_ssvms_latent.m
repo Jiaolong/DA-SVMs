@@ -132,7 +132,7 @@
 % %     acc_src = test_svm(model, mid_te'-1, dt_te);
 % %     fprintf('\n SVM: Split %d, domain classification accuracy = %f', i, acc_src);
 %     % train RF per category
-% %     for c=1:length(param.categories)
+% %     for c=1:param.num_class
 % %         index = (lb_tr == c);
 % %         X1  = dt_tr(index,:);
 % %         Y1  = mid_tr(index);
