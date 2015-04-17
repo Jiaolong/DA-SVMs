@@ -5,9 +5,9 @@ catch
     dir_virtual = param.data_dir_virtual;
     dir_real = param.data_dir_real;
     
-    list_src_train = readTextFile([dir_virtual '/trainList200.txt']);
-    list_tar_train = readTextFile([dir_real '/trainTRG30.txt']);
-    list_tar_test = readTextFile([dir_real '/evalList.txt']);
+    list_src_train = readTextFile(param.train_src_list);
+    list_tar_train = readTextFile(param.train_tar_list);
+    list_tar_test = readTextFile(param.test_tar_list);
     
     fts_train_src = [];
     labels_train_src = [];
@@ -15,7 +15,7 @@ catch
     fprintf('\nLoading source domain training data ...\n');
     for i = 1:length(list_src_train)
         % read over-segmentations (superpixels)
-        segs2 = dlmread([dir_virtual '/FEATS/' list_src_train{i} '.labels.txt']);
+        segs2 = dlmread([dir_virtual '/SuperPixelsLabels/' list_src_train{i} '.labels.txt']);
         
         % read segmentation features
         feat2= dlmread([dir_virtual '/FEATS/' list_src_train{i} '.features.txt']);
@@ -34,7 +34,7 @@ catch
     fprintf('\nLoading target domain training data ...\n');
     for i = 1:length(list_tar_train)
         % read over-segmentations (superpixels)
-        segs2 = dlmread([dir_real '/FEATS/' list_tar_train{i} '.labels.txt']);
+        segs2 = dlmread([dir_real '/SuperPixelsLabels/' list_tar_train{i} '.labels.txt']);
         
         % read segmentation features
         feat2= dlmread([dir_real '/FEATS/' list_tar_train{i} '.features.txt']);
@@ -53,7 +53,7 @@ catch
     fprintf('\nLoading target domain testing data ...\n');
     for i = 1:length(list_tar_test)
         % read over-segmentations (superpixels)
-        segs2 = dlmread([dir_real '/FEATS/' list_tar_test{i} '.labels.txt']);
+        segs2 = dlmread([dir_real '/SuperPixelsLabels/' list_tar_test{i} '.labels.txt']);
         
         % read segmentation features
         feat2= dlmread([dir_real '/FEATS/' list_tar_test{i} '.features.txt']);

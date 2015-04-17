@@ -1,16 +1,21 @@
-function [acc, pl, scores, confus, acc_overall] = test_svm(model, labels, data)
+function [acc_ovr, acc_avg, pl, scores, confus] = test_svm(model, labels, data, aug_data)
 % Usage:
 %   [acc pl] = test_svm(model, labels, data)
 % Input
-%   model  -trained model
-%   labels -ground truth label
-%   data   -test data, num_samplesxdim
+%   model    -trained model
+%   labels   -ground truth label
+%   data     -test data, num_samplesxdim
+%   aug_data - if true augment data with 1
 % Output:
 %   acc    -accuracy
 %   pl     -predicted label
 %   score  - score of each sample
 %   confus - confusion maxtrix
 %   acc_overall - overall accuracy = total_correct/ total_sample
+
+if nargin < 4
+    aug_data = true;
+end
 
 data = data';
 num_classes = size(model.w,2);
@@ -25,7 +30,12 @@ numTest(numTest == 0) = Inf;
 model = order_model(model);
 
 % Estimate the class of the test images
-scores = model.w' * data + model.b' * ones(1,size(data,2));
+if aug_data
+    scores = model.w' * data + model.b' * ones(1,size(data,2));
+else
+    assert(size(data, 1) -1 == size(model.w, 1))
+    scores = model.w' * data(1:end-1,:) + model.b'*data(end,:);
+end
 
 [~, imageEstClass] = max(scores, [], 1);
 
@@ -45,9 +55,9 @@ confus = binsum(confus, ones(size(idx)), idx);
 % title(sprintf('Confusion matrix (%.2f %% accuracy)', ...
 %     100 * mean(diag(confus)./numTest) )) ;
 % print('-depsc2', [conf.resultPath '.ps']) ;
-acc = 100*mean(diag(confus)./numTest);
+acc_avg = 100*mean(diag(confus)./numTest);
 pl = imageEstClass;
 
 correct = sum((imageEstClass - labels) == 0);
-acc_overall = 100*correct/length(labels);
+acc_ovr = 100*correct/length(labels);
 end

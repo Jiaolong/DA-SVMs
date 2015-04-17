@@ -6,46 +6,12 @@ param.domains = [virtual, kitti, cambi];
 param.domain_names = {'virtual', 'kitti', 'camvid'};
 param.use_Gaussian_kernel = false;
 
-% <region id="-1" name="void" color="0 0 0"/>
-% <region id="0" name="building" color="128 0 0"/>
-% <region id="1" name="grass" color="0 128 0"/>
-% <region id="2" name="tree" color="128 128 0"/>
-% <region id="3" name="cow" color="0 0 128"/>
-% <region id="4" name="sheep" color="0 128 128"/>
-% <region id="5" name="sky" color="128 128 128"/>
-% <region id="6" name="airplane" color="192 0 0"/>
-% <region id="7" name="water" color="64 128 0"/>
-% <region id="8" name="face" color="192 128 0"/>
-% <region id="9" name="car" color="64 0 128"/>
-% <region id="10" name="bicycle" color="192 0 128"/>
-% <region id="11" name="flower" color="64 128 128"/>
-% <region id="12" name="sign" color="192 128 128"/>
-% <region id="13" name="bird" color="0 64 0"/>
-% <region id="14" name="book" color="128 64 0"/>
-% <region id="15" name="chair" color="0 192 0"/>
-% <region id="16" name="road" color="128 64 128"/>
-% <region id="17" name="cat" color="0 192 128"/>
-% <region id="18" name="dog" color="128 192 128"/>
-% <region id="19" name="body" color="64 64 0"/>
-% <region id="20" name="boat" color="192 64 0"/>
-       
-% param.categories = {'building' 'grass'  'tree' ...
-%     'cow' 'sheep'  'sky' 'airplane'  'water' ...
-%     'face' 'car' 'bicycle' 'flower' 'sign' 'bird' ...
-%     'book' 'chair' 'road' 'cat' 'dog' 'body' 'boat'};
-
-% param.categories = {'building' 'grass'  'tree' ...
-%     'cow' 'sheep'  'sky' 'airplane'  'water' ...
-%     'face' 'car' 'bicycle'};
-param.num_class = 11;
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%                      PARAMETERS TO EDIT                       %%%%%%
-% Directory containing the data 
-param.data_dir_virtual = './data_scene/LauraVid/';
-param.data_dir_real = './data_scene/CamVid/';
-
+param.num_class = 6;
+param.data_dir_virtual = './data_scene/CamVid_plus_LauraVid_6class/';
+param.data_dir_real = param.data_dir_virtual;
+param.train_src_list = [param.data_dir_virtual '/trainSRC633.txt'];
+param.train_tar_list = [param.data_dir_real '/trainTRG20_2.txt'];
+param.test_tar_list = [param.data_dir_real '/evalList.txt'];
 % Choose the experiment type
 param.held_out_categories = false; 
 

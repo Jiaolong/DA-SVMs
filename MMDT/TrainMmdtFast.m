@@ -24,7 +24,7 @@ weights_t = param.C_t * ones(length(labels.target),1);
 
 w = svm.w';
 model.svmmodel = svm;
-model.b = param.svm.biasMultiplier * w(end, :) ;
+model.b = param.svm.biasMultiplier * w(end, :);
 model.w = w(1:end-1, :);
 model.Label = svm.Label;
 end
